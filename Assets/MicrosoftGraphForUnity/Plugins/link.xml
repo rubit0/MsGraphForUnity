@@ -1,0 +1,13 @@
+<linker>
+    <assembly fullname="Microsoft.Graph" preserve="all"/>
+    <assembly fullname="Microsoft.Graph.Core" preserve="all"/>
+    <assembly fullname="Microsoft.Identity.Client" preserve="all"/>
+    <assembly fullname="Newtonsoft.Json" preserve="all"/>
+    <assembly fullname="System.Buffers" preserve="all"/>
+    <assembly fullname="System.Diagnostics.DiagnosticSource" preserve="all"/>
+    <assembly fullname="System.Memory" preserve="all"/>
+    <assembly fullname="System.Runtime.CompilerServices.Unsafe" preserve="all"/>
+    <assembly fullname="System.Core">
+        <type fullname="System.Linq.Expressions.Interpreter.LightLambda" preserve="all" />
+    </assembly>
+</linker>
