@@ -64,9 +64,9 @@ namespace MicrosoftGraphForUnity
         /// <param name="clientId">The clientId (appId) associated in Azure Active Directory</param>
         /// <param name="redirectUri">MSAL redirect URI specified in Azure Active Directory</param>
         /// <param name="scopes">Define scopes that this application can access on MS Graph.</param>
-        /// <param name="tokenCachePath">The path where to save the token in case System.Security.Cryptography is not supported.</param>
+        /// <param name="tokenCacheDirectory">The directory path where to save the token in case System.Security.Cryptography is not supported.</param>
         /// <exception cref="ArgumentException">You must specify a clientId.</exception>
-        public AuthenticationService(string clientId, string redirectUri, string[] scopes, string tokenCachePath)
+        public AuthenticationService(string clientId, string redirectUri, string[] scopes, string tokenCacheDirectory)
         {
             if (string.IsNullOrWhiteSpace(clientId))
             {
@@ -82,7 +82,7 @@ namespace MicrosoftGraphForUnity
                 .Build();
             
 #if !WINDOWS_UWP
-            var tokenCacheHelper = new TokenCacheHandler(tokenCachePath);
+            var tokenCacheHelper = new TokenCacheHandler(tokenCacheDirectory);
             tokenCacheHelper.EnableSerialization(identityClientApp.UserTokenCache);
 #endif
 

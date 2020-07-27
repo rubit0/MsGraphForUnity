@@ -48,10 +48,11 @@ namespace MicrosoftGraphForUnity
             Assert.IsTrue(redirectUrl.Length > 0, "You must provide a redirect url.");
             Assert.IsTrue(scopes.Length > 0, "You must specify at least one scope.");
             
-            AuthenticationService = new AuthenticationService(appId, redirectUrl, scopes, Application.persistentDataPath + ".msalcache.bin3");
+            Debug.Log(Application.persistentDataPath + "/token/");
+            
+            AuthenticationService = new AuthenticationService(appId, redirectUrl, scopes, Application.persistentDataPath + "/token/");
             AuthenticationService.OnAuthenticationChanged += (sender, state) =>
             {
-                Debug.Log(state);
                 switch (state)
                 {
                     case AuthenticationState.StartedInteractive:

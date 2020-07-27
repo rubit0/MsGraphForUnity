@@ -10,12 +10,17 @@ namespace MicrosoftGraphForUnity
     /// </summary>
     public class TokenCacheHandler
     {
-        private readonly string _cacheFilePath;
+        private readonly string cacheFilePath;
         private readonly object fileLock = new object();
 
-        public TokenCacheHandler(string cacheFilePath)
+        public TokenCacheHandler(string cacheDirectoryPath)
         {
-            _cacheFilePath = cacheFilePath;
+            if (!Directory.Exists(cacheDirectoryPath))
+            {
+                Directory.CreateDirectory(cacheDirectoryPath);
+            }
+
+            cacheFilePath = cacheDirectoryPath + "msalcache.bin3";
         }
         
         public void EnableSerialization(ITokenCache tokenCache)
@@ -30,8 +35,8 @@ namespace MicrosoftGraphForUnity
             {
                 try
                 {
-                    args.TokenCache.DeserializeMsalV3(File.Exists(_cacheFilePath)
-                        ? ProtectedData.Unprotect(File.ReadAllBytes(_cacheFilePath),
+                    args.TokenCache.DeserializeMsalV3(File.Exists(cacheFilePath)
+                        ? ProtectedData.Unprotect(File.ReadAllBytes(cacheFilePath),
                             null,
                             DataProtectionScope.CurrentUser)
                         : null);
@@ -39,8 +44,8 @@ namespace MicrosoftGraphForUnity
                 catch (PlatformNotSupportedException ex)
                 {
                     //TODO You must implement here your own cryptographic methods
-                    args.TokenCache.DeserializeMsalV3(File.Exists(_cacheFilePath)
-                        ? File.ReadAllBytes(_cacheFilePath)
+                    args.TokenCache.DeserializeMsalV3(File.Exists(cacheFilePath)
+                        ? File.ReadAllBytes(cacheFilePath)
                         : null);
                 }
             }
@@ -56,13 +61,13 @@ namespace MicrosoftGraphForUnity
                     {
                         var data = ProtectedData.Protect(args.TokenCache.SerializeMsalV3(), null,
                             DataProtectionScope.CurrentUser);
-                        File.WriteAllBytes(_cacheFilePath, data);
+                        File.WriteAllBytes(cacheFilePath, data);
                     }
                     catch (PlatformNotSupportedException ex)
                     {
                         //TODO You must implement here your own cryptographic methods
                         var data = args.TokenCache.SerializeMsalV3();
-                        File.WriteAllBytes(_cacheFilePath, data);
+                        File.WriteAllBytes(cacheFilePath, data);
                     }
                 }
             }
