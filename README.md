@@ -18,6 +18,7 @@ Verified working platforms:
 | ------------- |-------------|
 | Android  | Device Code |
 | Android/Oculus Quest  | Device Code |
+| iOS  | Device Code |
 | UWP/HoloLens  | Interactive |
 | Win32/Editor  | Device Code |
 
