@@ -1,10 +1,30 @@
 # Microsoft Graph for Unity
 This package brings Microsoft Graph with MSAL (authentication) to Unity (2019.4 LTS).  
-You can access all MS Graph APIs like OneDrive or Teams.
+You can access all MS Graph APIs like OneDrive, SharePoint for Business, Microsoft Teams and more.
 
 ## Setup
-Add the MicrosoftGraphManager component to a GameObject in your scene.  
-Then provide the AppId, Redirect url and the desired access scopes.
+
+### Azure Portal
+First you need to **register your native application** to grant access with MS Graph APIs.  
+[Learn how to register your application for MS Graph](https://docs.microsoft.com/en-US/graph/auth-register-app-v2)
+
+Once you have registered your application, make sure the option **Default client type** under the *Authentication* section is set to true.
+
+Now go the *API permissions* section. Here you can add permissions for all MS Graph APIs your application should be able to access.  
+We recommend to add at least the following permissions:
+
+- *User.Read*
+- *offline_access*
+
+For file access from OneDrive add additionally the permissions *Files.ReadWrite.All*.
+
+#### Work accounts and file access
+When a user signs in with a work account, then the drive/file API uses SharePoint as backend and not OneDrive.  
+In practice this means the App registration needs additional **API permissions for SharePoint**, specifically *Sites.Read.All* to list drive items or *Sites.ReadWrite.All* for storing new files.
+
+### Unity
+Add the **MicrosoftGraphManager** component to a GameObject in your scene.  
+Then provide the ***App Id*, *Redirect Url* and the desired *access scopes*** which you can retrieve from the app registration in the azure portal. Make sure that the specified *access scopes* do not exceed what is specified in the app registration.
 
 ## Example scene
 This package includes an example scene that deals with all relevant aspects and works as a great starting point.
