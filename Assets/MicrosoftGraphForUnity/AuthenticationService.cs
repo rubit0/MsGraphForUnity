@@ -62,7 +62,7 @@ namespace MicrosoftGraphForUnity
         /// Only one instance for the entire app lifecycle is needed.
         /// </summary>
         /// <param name="clientId">The clientId (appId) associated in Azure Active Directory</param>
-        /// <param name="redirectUri">MSAL redirect URI specified in Azure Active Directory</param>
+        /// <param name="redirectUri">Optional MSAL redirect URI specified in Azure Active Directory</param>
         /// <param name="scopes">Define scopes that this application can access on MS Graph.</param>
         /// <param name="tokenCacheDirectory">The directory path where to save the token in case System.Security.Cryptography is not supported.</param>
         /// <exception cref="ArgumentException">You must specify a clientId.</exception>
@@ -76,10 +76,13 @@ namespace MicrosoftGraphForUnity
             ClientId = clientId;
             grantScopes = scopes;
 
-            identityClientApp = PublicClientApplicationBuilder
-                .Create(clientId)
-                .WithRedirectUri(redirectUri)
-                .Build();
+            var clientBuilder = PublicClientApplicationBuilder.Create(clientId);
+            if (!string.IsNullOrWhiteSpace(redirectUri))
+            {
+                clientBuilder.WithRedirectUri(redirectUri);
+            }
+            
+            identityClientApp = clientBuilder.Build();
             
 #if !WINDOWS_UWP
             var tokenCacheHelper = new TokenCacheHandler(tokenCacheDirectory);

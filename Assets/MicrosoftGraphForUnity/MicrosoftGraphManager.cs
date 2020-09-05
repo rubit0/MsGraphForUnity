@@ -45,7 +45,6 @@ namespace MicrosoftGraphForUnity
         private void Awake()
         {
             Assert.IsTrue(appId.Length > 0, "You must provide a application Id.");
-            Assert.IsTrue(redirectUrl.Length > 0, "You must provide a redirect url.");
             Assert.IsTrue(scopes.Length > 0, "You must specify at least one scope.");
             
             Debug.Log(Application.persistentDataPath + "/token/");
