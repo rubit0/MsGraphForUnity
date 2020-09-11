@@ -208,7 +208,6 @@ namespace MicrosoftGraphForUnity
                     var authResult = await identityClientApp.AcquireTokenSilent(grantScopes, accounts.First()).ExecuteAsync();
                     TokenForUser = authResult.AccessToken;
                     Expiration = authResult.ExpiresOn;
-                    OnAuthenticationChanged?.Invoke(this, AuthenticationState.Completed);
                     return;
                 }
                 catch (Exception)

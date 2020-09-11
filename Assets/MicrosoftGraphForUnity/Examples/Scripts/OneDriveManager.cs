@@ -60,7 +60,9 @@ namespace MicrosoftGraphForUnity.Examples
 
             isSearching = true;
             searchButtonText.text = "Cancel";
-            var searchResult = await SearchDrive(graphManager.Client.Drive, inputField.text);
+            var searchResult = await SearchDrive(graphManager.Client.Me.Drive, inputField.text);
+            // var searchResult = await graphManager.Client.Drive.Items["FCD4E627B66473E3!3519"].Children.Request().GetAsync();
+
             if (!searchResult.Any())
             {
                 isSearching = false;
@@ -78,6 +80,7 @@ namespace MicrosoftGraphForUnity.Examples
             }
             
             foundItems = new List<UIDriveItemElement>();
+            var counter = 0;
             foreach (var driveItem in searchResult)
             {
                 if (cancelSearch)
@@ -87,8 +90,16 @@ namespace MicrosoftGraphForUnity.Examples
                 var item = Instantiate(driveItemPrefab, contentRoot);
                 item.transform.SetAsLastSibling();
                 item.text.text = driveItem.Name;
-                var sprite = await DownloadDriveItemThumbnail(graphManager.Client.Drive, driveItem.Id);
-                item.image.sprite = sprite != null ? sprite : placeHolderThumbnail;
+                Debug.Log("Downloading " + driveItem.Name);
+                using (var data = await graphManager.Client.Me.Drive.Items[driveItem.Id].Content.Request().GetAsync())
+                {
+                    counter++;
+                    Debug.Log("Downloaded data " + counter);
+                }
+
+                var sprite = await DownloadDriveItemThumbnail(graphManager.Client.Me.Drive, driveItem.Id);
+                // item.image.sprite = sprite != null ? sprite : placeHolderThumbnail;
+                
                 foundItems.Add(item);
             }
             
